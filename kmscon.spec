@@ -1,3 +1,4 @@
+# TODO: allow to use systemd-enabled version without systemd running
 #
 # Conditional build:
 %bcond_without	systemd		# systemd-based multi-seat support
