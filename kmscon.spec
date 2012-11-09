@@ -2,6 +2,7 @@
 #
 # Conditional build:
 %bcond_without	systemd		# systemd-based multi-seat support
+%bcond_without	udev		# udev-based hotplug support
 %bcond_without	unifont		# Unifont backend (could make kmscon GPLed)
 %bcond_with	wayland		# wayland-based wlterm [needs update for wayland 1.0]
 #
@@ -17,6 +18,7 @@ Source0:	https://github.com/downloads/dvdhrm/kmscon/%{name}-%{version}.tar.bz2
 # Source0-md5:	d35014947a468d1a5e633d4221d2e4fa
 Patch0:		%{name}-xkbcommon.patch
 Patch1:		%{name}-link.patch
+Patch2:		%{name}-format.patch
 URL:		https://github.com/dvdhrm/kmscon/wiki/KMSCON
 BuildRequires:	Mesa-libEGL-devel
 BuildRequires:	Mesa-libGLES-devel
@@ -89,6 +91,7 @@ Statyczne biblioteki kmscon.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -99,6 +102,7 @@ Statyczne biblioteki kmscon.
 %configure \
 	--disable-silent-rules \
 	%{!?with_systemd:--disable-systemd} \
+	%{!?with_udev:--disable-udev} \
 	%{?with_unifont:--enable-unifont} \
 	%{?with_wayland:--enable-wlterm}
 %{__make}
