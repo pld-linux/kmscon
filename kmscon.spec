@@ -6,7 +6,7 @@
 %bcond_without	unifont		# Unifont backend (could make kmscon GPLed)
 %bcond_with	wayland		# wayland-based wlterm [needs update for wayland 1.0]
 #
-Summary:	Simple terminal emulator baed on Linux Kernel Mode Setting (KMS)
+Summary:	Simple terminal emulator based on Linux Kernel Mode Setting (KMS)
 Summary(pl.UTF-8):	Prosty emulator terminala oparty na linuksowym KMS (Kernel Mode Setting)
 Name:		kmscon
 Version:	5
