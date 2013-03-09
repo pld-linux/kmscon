@@ -5,20 +5,18 @@
 %bcond_without	udev		# udev-based hotplug support
 %bcond_without	unifont		# Unifont backend (could make kmscon GPLed)
 %bcond_with	wayland		# wayland-based wlterm [needs update for wayland 1.0]
-#
+
 Summary:	Simple terminal emulator based on Linux Kernel Mode Setting (KMS)
 Summary(pl.UTF-8):	Prosty emulator terminala oparty na linuksowym KMS (Kernel Mode Setting)
 Name:		kmscon
-Version:	5
-Release:	1
+Version:	6
+Release:	0.1
 License:	MIT (code), GPL (Unifont)
 Group:		Applications/Terminal
 #Source0Download: https://github.com/dvdhrm/kmscon/downloads
 Source0:	https://github.com/downloads/dvdhrm/kmscon/%{name}-%{version}.tar.bz2
-# Source0-md5:	d35014947a468d1a5e633d4221d2e4fa
-Patch0:		%{name}-xkbcommon.patch
+# Source0-md5:	12f6966cef8e846f31dbcad916a9f347
 Patch1:		%{name}-link.patch
-Patch2:		%{name}-format.patch
 URL:		https://github.com/dvdhrm/kmscon/wiki/KMSCON
 BuildRequires:	Mesa-libEGL-devel
 BuildRequires:	Mesa-libGLES-devel
@@ -32,7 +30,7 @@ BuildRequires:	libtool >= 2:2.2
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig
 %{?with_systemd:BuildRequires:	systemd-devel}
-BuildRequires:	udev-devel
+BuildRequires:	udev-devel >= 1:172
 # wayland-client wayland-server wayland-cursor
 %{?with_wayland:BuildRequires:	wayland-devel}
 BuildRequires:	xorg-lib-libxkbcommon-devel >= 0.2.0
@@ -89,9 +87,7 @@ Statyczne biblioteki kmscon.
 
 %prep
 %setup -q
-%patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__libtoolize}

@@ -1,5 +1,5 @@
---- kmscon-5/Makefile.am.orig	2012-09-26 22:56:09.716902778 +0200
-+++ kmscon-5/Makefile.am	2012-11-09 17:56:46.818557932 +0100
+--- kmscon-6/Makefile.am~	2013-03-09 20:27:31.000000000 +0200
++++ kmscon-6/Makefile.am	2013-03-09 20:27:42.798733628 +0200
 @@ -56,16 +56,6 @@
  AM_LDFLAGS = \
  	-Wl,--as-needed
@@ -17,15 +17,15 @@
  #
  # SHL - Static Helper Library
  # The SHL subsystem contains several small code pieces used all over kmscon and
-@@ -119,7 +109,7 @@
- 	$(AM_CPPFLAGS) \
+@@ -112,7 +112,7 @@
+ libeloop_la_CPPFLAGS += \
  	$(DBUS_CFLAGS)
- libeloop_la_LIBADD = \
+ libeloop_la_LIBADD += \
 -	$(DBUS_LIBS)
 +	$(DBUS_LIBS) -lpthread
- libeloop_la_LDFLAGS = \
- 	-version-info 1:0:0
+ endif
  
+ #
 @@ -156,6 +146,7 @@
  	$(AM_CPPFLAGS)
  libtsm_la_LDFLAGS = \
