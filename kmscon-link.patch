@@ -1,5 +1,5 @@
---- kmscon-6/Makefile.am~	2013-03-09 20:27:31.000000000 +0200
-+++ kmscon-6/Makefile.am	2013-03-09 20:27:42.798733628 +0200
+--- kmscon-kmscon-7/Makefile.am~	2013-03-09 21:41:00.000000000 +0200
++++ kmscon-kmscon-7/Makefile.am	2013-03-09 21:42:16.711615577 +0200
 @@ -56,16 +56,6 @@
  AM_LDFLAGS = \
  	-Wl,--as-needed
@@ -17,20 +17,20 @@
  #
  # SHL - Static Helper Library
  # The SHL subsystem contains several small code pieces used all over kmscon and
-@@ -112,7 +112,7 @@
- libeloop_la_CPPFLAGS += \
- 	$(DBUS_CFLAGS)
- libeloop_la_LIBADD += \
--	$(DBUS_LIBS)
-+	$(DBUS_LIBS) -lpthread
+@@ -198,7 +198,7 @@
+ 	external/dbus-loop.h \
+ 	external/dbus-loop.c
+ libeloop_la_CPPFLAGS += $(DBUS_CFLAGS)
+-libeloop_la_LIBADD += $(DBUS_LIBS)
++libeloop_la_LIBADD += $(DBUS_LIBS) -lpthread
  endif
  
  #
-@@ -156,6 +146,7 @@
- 	$(AM_CPPFLAGS)
+@@ -233,6 +233,7 @@
+ 	$(XKBCOMMON_CFLAGS)
+ libtsm_la_LIBADD = \
+ 	$(XKBCOMMON_LIBS) \
++	-lrt \
+ 	libshl.la
+ EXTRA_libtsm_la_DEPENDENCIES = ${top_srcdir}/docs/sym/libtsm.sym
  libtsm_la_LDFLAGS = \
- 	-version-info 1:0:0
-+libtsm_la_LIBADD = -lrt
- 
- #
- # libuterm

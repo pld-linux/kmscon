@@ -1,4 +1,6 @@
-# TODO: allow to use systemd-enabled version without systemd running
+# TODO
+# - allow to use systemd-enabled version without systemd running
+# - modules can be put to subpackages
 #
 # Conditional build:
 %bcond_without	systemd		# systemd-based multi-seat support
@@ -9,13 +11,13 @@
 Summary:	Simple terminal emulator based on Linux Kernel Mode Setting (KMS)
 Summary(pl.UTF-8):	Prosty emulator terminala oparty na linuksowym KMS (Kernel Mode Setting)
 Name:		kmscon
-Version:	6
+Version:	7
 Release:	0.1
 License:	MIT (code), GPL (Unifont)
 Group:		Applications/Terminal
 #Source0Download: https://github.com/dvdhrm/kmscon/downloads
-Source0:	https://github.com/downloads/dvdhrm/kmscon/%{name}-%{version}.tar.bz2
-# Source0-md5:	12f6966cef8e846f31dbcad916a9f347
+Source0:	https://github.com/dvdhrm/kmscon/archive/%{name}-%{version}.tar.gz
+# Source0-md5:	a8e2339b74111091d771caf81bf2da6e
 Patch1:		%{name}-link.patch
 URL:		https://github.com/dvdhrm/kmscon/wiki/KMSCON
 BuildRequires:	Mesa-libEGL-devel
@@ -24,7 +26,6 @@ BuildRequires:	Mesa-libgbm-devel
 BuildRequires:	autoconf >= 2.68
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	dbus-devel
-BuildRequires:	freetype-devel >= 2
 BuildRequires:	libdrm-devel
 BuildRequires:	libtool >= 2:2.2
 BuildRequires:	pango-devel
@@ -86,7 +87,7 @@ Static kmscon libraries.
 Statyczne biblioteki kmscon.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{name}-%{version}
 %patch1 -p1
 
 %build
@@ -109,6 +110,10 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# modules dlopened, so static modules do not make sense
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/kmscon/mod-*.a
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/kmscon/mod-*.la
+
 # keeping *.la because of missing all external dependencies in *.pc
 
 %clean
@@ -121,6 +126,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc COPYING NEWS README
 %attr(755,root,root) %{_bindir}/kmscon
+%{_mandir}/man1/kmscon.1*
+%dir %{_libdir}/kmscon
+%attr(755,root,root) %{_libdir}/kmscon/mod-bbulk.so
+%attr(755,root,root) %{_libdir}/kmscon/mod-gltex.so
+%attr(755,root,root) %{_libdir}/kmscon/mod-pango.so
+%attr(755,root,root) %{_libdir}/kmscon/mod-unifont.so
 
 %files libs
 %defattr(644,root,root,755)
@@ -141,7 +152,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libuterm.la
 %{_includedir}/eloop.h
 %{_includedir}/tsm_*.h
-%{_includedir}/uterm.h
+%{_includedir}/uterm_*.h
 %{_pkgconfigdir}/libeloop.pc
 %{_pkgconfigdir}/libtsm.pc
 %{_pkgconfigdir}/libuterm.pc
