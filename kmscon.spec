@@ -12,21 +12,22 @@ Summary:	Simple terminal emulator based on Linux Kernel Mode Setting (KMS)
 Summary(pl.UTF-8):	Prosty emulator terminala oparty na linuksowym KMS (Kernel Mode Setting)
 Name:		kmscon
 Version:	7
-Release:	0.1
+Release:	1
 License:	MIT (code), GPL (Unifont)
 Group:		Applications/Terminal
-#Source0Download: https://github.com/dvdhrm/kmscon/downloads
-Source0:	https://github.com/dvdhrm/kmscon/archive/%{name}-%{version}.tar.gz
-# Source0-md5:	a8e2339b74111091d771caf81bf2da6e
+Source0:	http://www.freedesktop.org/software/kmscon/releases/%{name}-%{version}.tar.bz2
+# Source0-md5:	d39d6d404196eb34c7355cd17f1e99d3
 Patch1:		%{name}-link.patch
 URL:		https://github.com/dvdhrm/kmscon/wiki/KMSCON
 BuildRequires:	Mesa-libEGL-devel
+# glesv2
 BuildRequires:	Mesa-libGLES-devel
 BuildRequires:	Mesa-libgbm-devel
 BuildRequires:	autoconf >= 2.68
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	dbus-devel
 BuildRequires:	libdrm-devel
+BuildRequires:	libfuse-devel >= 2.9.0
 BuildRequires:	libtool >= 2:2.2
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig
@@ -36,6 +37,7 @@ BuildRequires:	udev-devel >= 1:172
 %{?with_wayland:BuildRequires:	wayland-devel}
 BuildRequires:	xorg-lib-libxkbcommon-devel >= 0.2.0
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	libfuse >= 2.9.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # log symbols in convenience libkmscon_core.la/main
@@ -55,6 +57,7 @@ implementacji VT z jądra konsolą w przestrzeni użytkownika.
 Summary:	Kmscon libraries
 Summary(pl.UTF-8):	Biblioteki kmscon
 Group:		Libraries
+Requires:	udev-libs >= 1:172
 
 %description libs
 Kmscon libraries.
@@ -87,7 +90,7 @@ Static kmscon libraries.
 Statyczne biblioteki kmscon.
 
 %prep
-%setup -q -n %{name}-%{name}-%{version}
+%setup -q
 %patch1 -p1
 
 %build
