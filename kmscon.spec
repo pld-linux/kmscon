@@ -17,7 +17,7 @@ Group:		Applications/Terminal
 Source0:	http://www.freedesktop.org/software/kmscon/releases/%{name}-%{version}.tar.xz
 # Source0-md5:	90d39c4ef53a11c53f27be4a7e9acee4
 Patch1:		%{name}-link.patch
-URL:		https://github.com/dvdhrm/kmscon/wiki/KMSCON
+URL:		http://www.freedesktop.org/wiki/Software/kmscon/
 BuildRequires:	Mesa-libEGL-devel
 # glesv2
 BuildRequires:	Mesa-libGLES-devel
