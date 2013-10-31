@@ -6,17 +6,16 @@
 %bcond_without	systemd		# systemd-based multi-seat support
 %bcond_without	udev		# udev-based hotplug support
 %bcond_without	unifont		# Unifont backend (could make kmscon GPLed)
-%bcond_with	wayland		# wayland-based wlterm [needs update for wayland 1.0]
 
 Summary:	Simple terminal emulator based on Linux Kernel Mode Setting (KMS)
 Summary(pl.UTF-8):	Prosty emulator terminala oparty na linuksowym KMS (Kernel Mode Setting)
 Name:		kmscon
-Version:	7
+Version:	8
 Release:	1
 License:	MIT (code), GPL (Unifont)
 Group:		Applications/Terminal
-Source0:	http://www.freedesktop.org/software/kmscon/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	d39d6d404196eb34c7355cd17f1e99d3
+Source0:	http://www.freedesktop.org/software/kmscon/releases/%{name}-%{version}.tar.xz
+# Source0-md5:	90d39c4ef53a11c53f27be4a7e9acee4
 Patch1:		%{name}-link.patch
 URL:		https://github.com/dvdhrm/kmscon/wiki/KMSCON
 BuildRequires:	Mesa-libEGL-devel
@@ -25,19 +24,21 @@ BuildRequires:	Mesa-libGLES-devel
 BuildRequires:	Mesa-libgbm-devel
 BuildRequires:	autoconf >= 2.68
 BuildRequires:	automake >= 1:1.11
-BuildRequires:	dbus-devel
 BuildRequires:	libdrm-devel
-BuildRequires:	libfuse-devel >= 2.9.0
+BuildRequires:	libtsm-devel
 BuildRequires:	libtool >= 2:2.2
 BuildRequires:	pango-devel
+BuildRequires:	pixman-devel
 BuildRequires:	pkgconfig
 %{?with_systemd:BuildRequires:	systemd-devel}
 BuildRequires:	udev-devel >= 1:172
-# wayland-client wayland-server wayland-cursor
-%{?with_wayland:BuildRequires:	wayland-devel}
+BuildRequires:	tar >= 1:1.22
 BuildRequires:	xorg-lib-libxkbcommon-devel >= 0.2.0
-Requires:	%{name}-libs = %{version}-%{release}
-Requires:	libfuse >= 2.9.0
+BuildRequires:	xz
+Requires:	udev-libs >= 1:172
+Obsoletes:	kmscon-devel
+Obsoletes:	kmscon-libs
+Obsoletes:	kmscon-static
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # log symbols in convenience libkmscon_core.la/main
@@ -53,42 +54,6 @@ Kmscon to prosty emulator terminala oparty na linuksowym KMS (kernel
 mode setting - ustawianiu trybów w jądrze). Jest to próba zastąpienia
 implementacji VT z jądra konsolą w przestrzeni użytkownika.
 
-%package libs
-Summary:	Kmscon libraries
-Summary(pl.UTF-8):	Biblioteki kmscon
-Group:		Libraries
-Requires:	udev-libs >= 1:172
-
-%description libs
-Kmscon libraries.
-
-%description libs -l pl.UTF-8
-Biblioteki kmscon.
-
-%package devel
-Summary:	Header files for kmscon libraries
-Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek kmscon
-Group:		Development/Libraries
-Requires:	%{name}-libs = %{version}-%{release}
-
-%description devel
-Header files for kmscon libraries.
-
-%description devel -l pl.UTF-8
-Pliki nagłówkowe bibliotek kmscon.
-
-%package static
-Summary:	Static kmscon libraries
-Summary(pl.UTF-8):	Statyczne biblioteki kmscon
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-
-%description static
-Static kmscon libraries.
-
-%description static -l pl.UTF-8
-Statyczne biblioteki kmscon.
-
 %prep
 %setup -q
 %patch1 -p1
@@ -103,8 +68,7 @@ Statyczne biblioteki kmscon.
 	--disable-silent-rules \
 	%{!?with_systemd:--disable-systemd} \
 	%{!?with_udev:--disable-udev} \
-	%{?with_unifont:--enable-unifont} \
-	%{?with_wayland:--enable-wlterm}
+	%{?with_unifont:--enable-unifont}
 %{__make}
 
 %install
@@ -116,8 +80,6 @@ rm -rf $RPM_BUILD_ROOT
 # modules dlopened, so static modules do not make sense
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/kmscon/mod-*.a
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/kmscon/mod-*.la
-
-# keeping *.la because of missing all external dependencies in *.pc
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -135,33 +97,3 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/kmscon/mod-gltex.so
 %attr(755,root,root) %{_libdir}/kmscon/mod-pango.so
 %attr(755,root,root) %{_libdir}/kmscon/mod-unifont.so
-
-%files libs
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libeloop.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libeloop.so.1
-%attr(755,root,root) %{_libdir}/libtsm.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libtsm.so.1
-%attr(755,root,root) %{_libdir}/libuterm.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libuterm.so.1
-
-%files devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libeloop.so
-%attr(755,root,root) %{_libdir}/libtsm.so
-%attr(755,root,root) %{_libdir}/libuterm.so
-%{_libdir}/libeloop.la
-%{_libdir}/libtsm.la
-%{_libdir}/libuterm.la
-%{_includedir}/eloop.h
-%{_includedir}/tsm_*.h
-%{_includedir}/uterm_*.h
-%{_pkgconfigdir}/libeloop.pc
-%{_pkgconfigdir}/libtsm.pc
-%{_pkgconfigdir}/libuterm.pc
-
-%files static
-%defattr(644,root,root,755)
-%{_libdir}/libeloop.a
-%{_libdir}/libtsm.a
-%{_libdir}/libuterm.a

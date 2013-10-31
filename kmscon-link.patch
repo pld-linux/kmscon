@@ -17,20 +17,3 @@
  #
  # SHL - Static Helper Library
  # The SHL subsystem contains several small code pieces used all over kmscon and
-@@ -198,7 +198,7 @@
- 	external/dbus-loop.h \
- 	external/dbus-loop.c
- libeloop_la_CPPFLAGS += $(DBUS_CFLAGS)
--libeloop_la_LIBADD += $(DBUS_LIBS)
-+libeloop_la_LIBADD += $(DBUS_LIBS) -lpthread
- endif
- 
- #
-@@ -233,6 +233,7 @@
- 	$(XKBCOMMON_CFLAGS)
- libtsm_la_LIBADD = \
- 	$(XKBCOMMON_LIBS) \
-+	-lrt \
- 	libshl.la
- EXTRA_libtsm_la_DEPENDENCIES = ${top_srcdir}/docs/sym/libtsm.sym
- libtsm_la_LDFLAGS = \
