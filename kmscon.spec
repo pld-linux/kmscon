@@ -11,7 +11,7 @@ Summary:	Simple terminal emulator based on Linux Kernel Mode Setting (KMS)
 Summary(pl.UTF-8):	Prosty emulator terminala oparty na linuksowym KMS (Kernel Mode Setting)
 Name:		kmscon
 Version:	8
-Release:	1
+Release:	2
 License:	MIT (code), GPL (Unifont)
 Group:		Applications/Terminal
 Source0:	http://www.freedesktop.org/software/kmscon/releases/%{name}-%{version}.tar.xz
