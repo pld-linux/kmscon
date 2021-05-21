@@ -14,10 +14,10 @@ Version:	8
 Release:	2
 License:	MIT (code), GPL (Unifont)
 Group:		Applications/Terminal
-Source0:	http://www.freedesktop.org/software/kmscon/releases/%{name}-%{version}.tar.xz
+Source0:	https://www.freedesktop.org/software/kmscon/releases/%{name}-%{version}.tar.xz
 # Source0-md5:	90d39c4ef53a11c53f27be4a7e9acee4
 Patch1:		%{name}-link.patch
-URL:		http://www.freedesktop.org/wiki/Software/kmscon/
+URL:		https://www.freedesktop.org/wiki/Software/kmscon/
 BuildRequires:	Mesa-libEGL-devel
 # glesv2
 BuildRequires:	Mesa-libGLES-devel
