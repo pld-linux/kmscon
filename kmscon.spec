@@ -18,9 +18,8 @@ Source0:	https://www.freedesktop.org/software/kmscon/releases/%{name}-%{version}
 # Source0-md5:	90d39c4ef53a11c53f27be4a7e9acee4
 Patch1:		%{name}-link.patch
 URL:		https://www.freedesktop.org/wiki/Software/kmscon/
-BuildRequires:	Mesa-libEGL-devel
-# glesv2
-BuildRequires:	Mesa-libGLES-devel
+BuildRequires:	EGL-devel
+BuildRequires:	OpenGLESv2-devel
 BuildRequires:	Mesa-libgbm-devel
 BuildRequires:	autoconf >= 2.68
 BuildRequires:	automake >= 1:1.11
@@ -30,6 +29,8 @@ BuildRequires:	libtool >= 2:2.2
 BuildRequires:	pango-devel
 BuildRequires:	pixman-devel
 BuildRequires:	pkgconfig
+BuildRequires:	pkgconfig(egl)
+BuildRequires:	pkgconfig(glesv2)
 %{?with_systemd:BuildRequires:	systemd-devel}
 BuildRequires:	udev-devel >= 1:172
 BuildRequires:	tar >= 1:1.22
